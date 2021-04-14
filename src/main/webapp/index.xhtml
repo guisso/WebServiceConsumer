@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+    lang="pt-BR"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Consumo de CEP</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Orbitron");
+            * {
+                font-family: 'Orbitron', sans-serif;
+            }
+            body {
+                padding: 0 1em;
+            }
+            h1.titulo {
+                border-bottom: solid medium #adf;
+                margin-bottom: 0;
+            }
+            h2.subtitulo {
+                color: #479;
+                font-size: 1.1em;
+                padding-top: .15em;
+                margin-top: 0;
+                margin-bottom: 1.5em;
+            }
+            .cep {
+                width: 6.5em;
+            }
+            .dados {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 1em;
+            }
+            .dados tr {
+                border-bottom: solid thin gray;
+                border-top: solid thin gray;
+            }
+            .dados td {
+                padding: .35em;
+            }
+            .dados td:nth-child(1) {
+                width: 7em;
+                text-align: right;
+            }
+            .rotulo {
+                font-weight: bold;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h1 class="titulo">Consumo de CEP</h1>
+        <h2 class="subtitulo">RESTful Webservice client</h2>
+
+        <h:form
+            id="buscaCep">
+            
+            <p:outputLabel
+                for="cep"
+                value="CEP" />&nbsp;
+            
+            <p:inputMask
+                id="cep"
+                mask="99.999-999"
+                converter="cepConverter"
+                value="#{enderecoBean.cep}"
+                class="cep">
+                <p:focus />
+            </p:inputMask>&nbsp;
+
+            <p:commandButton
+                id="buscar"
+                icon="pi pi-search"
+                styleClass="rounded-button ui-button-info ui-button-flat"
+                action="#{enderecoBean.consultarCep()}"
+                update="@form"
+                oncomplete="$(function(){PrimeFaces.focus('buscaCep:numero');});"/>
+            
+            <h:panelGrid
+                styleClass="dados"
+                columns="2">
+                
+                <h:outputText
+                    value="Logradouro"
+                    styleClass="rotulo" />
+                <h:outputText
+                    value="#{enderecoBean
+                             .endereco.logradouro}" />
+                
+                <h:outputText
+                    value="Número"
+                    styleClass="rotulo" />
+                <h:inputText
+                    id="numero"
+                    value="#{enderecoBean
+                             .endereco.numero}" />
+                
+                <h:outputText
+                    value="Bairro"
+                    styleClass="rotulo" />
+                <h:outputText
+                    value="#{enderecoBean
+                             .endereco.bairro}" />
+                
+                <h:outputText
+                    value="Localidade"
+                    styleClass="rotulo" />
+                <h:outputText
+                    value="#{enderecoBean
+                             .endereco.localidade}" />
+                
+                <h:outputText
+                    value="UF"
+                    styleClass="rotulo" />
+                <h:outputText
+                    value="#{enderecoBean
+                             .endereco.uf}" />
+                
+            </h:panelGrid>
+            
+            <p:blockUI
+                block="buscaCep"
+                trigger="buscar">
+                <i class="pi pi-spin pi-spinner" 
+                   style="font-size: 3em" />
+            </p:blockUI>
+
+        </h:form>
+    </h:body>
+</html>
+
